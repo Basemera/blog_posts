@@ -15,8 +15,22 @@ Route::get('/', function () {
     return view('blog.index');
 })->name('blog.index');
 
-Route::get('/post/{id}', function () {
-    return view('blog.post');
+Route::get('/post/{id}', function ($id) {
+    if($id == 1){
+        $post = [
+            'title'=>'Learning Laravel',
+            'content'=>'This is some content to display'
+
+        ];
+    }
+    else{
+        $post = [
+            'title'=>'Something else',
+            'content'=>'This is some content to display when it is something else'
+
+        ];
+    }
+    return view('blog.post', ['post'=>$post]);
 })->name('blog.post');
 
 Route::get('/about', function () {
@@ -32,15 +46,43 @@ Route::group(['prefix'=>'admin'], function() {
         return view('admin.create');
     })->name('admin.create');
     
-    Route::get('/edit/{id}', function () {
-        return view('admin.edit');
+    Route::get('/edit/{id}', function ($id) {
+        if($id == 1){
+            $post = [
+                'title'=>'Learning Laravel',
+                'content'=>'This is some content to display'
+    
+            ];
+        }
+        else{
+            $post = [
+                'title'=>'Something else',
+                'content'=>'This is some content to display when it is something else'
+    
+            ];
+        }
+        return view('admin.edit', ['post'=>$post]);
     })->name('admin.edit');
     
-    Route::post('/create', function () {
-        return 'It works';
+    Route::post('/create', function (Illuminate\Http\Request $request, Validator $validator) {
+        $validation = Validator::make($request->all(), [
+            'title'=> 'required|min:5',
+            'content'=> 'required'
+        ]);
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation);
+        }
+        return redirect()->route('admin.index')->with('info', 'Post created with title '.$request->input('title'));
     })->name('admin.create');
     
-    Route::post('/edit', function () {
-        return 'It edits';
+    Route::post('/edit', function (Illuminate\Http\Request $request, Validator $validator) {
+        $validation = Validator::make($request->all(), [
+            'title'=> 'required|min:5',
+            'content'=> 'required'
+        ]);
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation);
+        }
+        return redirect()->route('admin.index')->with('info', 'Post edited to title '.$request->input('title'));
     })->name('admin.update');
 });
