@@ -10,79 +10,93 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// list posts
+Route::get('posts', 'postsController@index');
 
-Route::get('/', function () {
-    return view('blog.index');
-})->name('blog.index');
+// list single post
+Route::get('post/{id}', 'postsController@show');
 
-Route::get('/post/{id}', function ($id) {
-    if($id == 1){
-        $post = [
-            'title'=>'Learning Laravel',
-            'content'=>'This is some content to display'
+// create post
+Route::post('post', 'postsController@store');
 
-        ];
-    }
-    else{
-        $post = [
-            'title'=>'Something else',
-            'content'=>'This is some content to display when it is something else'
+// update post
+Route::put('post/{id}', 'postsController@store');
 
-        ];
-    }
-    return view('blog.post', ['post'=>$post]);
-})->name('blog.post');
+// delete post
+Route::delete('post/{id}', 'postsController@destroy');
 
-Route::get('/about', function () {
-    return view('other.about');
-})->name('other.about');
+// Route::get('/', function () {
+//     return view('blog.index');
+// })->name('blog.index');
 
-Route::group(['prefix'=>'admin'], function() {
-    Route::get('', function () {
-        return view('admin.index');
-    })->name('admin.index');
+// Route::get('/post/{id}', function ($id) {
+//     if($id == 1){
+//         $post = [
+//             'title'=>'Learning Laravel',
+//             'content'=>'This is some content to display'
+
+//         ];
+//     }
+//     else{
+//         $post = [
+//             'title'=>'Something else',
+//             'content'=>'This is some content to display when it is something else'
+
+//         ];
+//     }
+//     return view('blog.post', ['post'=>$post]);
+// })->name('blog.post');
+
+// Route::get('/about', function () {
+//     return view('other.about');
+// })->name('other.about');
+
+// Route::group(['prefix'=>'admin'], function() {
+//     Route::get('', function () {
+//         return view('admin.index');
+//     })->name('admin.index');
     
-    Route::get('/create', function () {
-        return view('admin.create');
-    })->name('admin.create');
+//     Route::get('/create', function () {
+//         return view('admin.create');
+//     })->name('admin.create');
     
-    Route::get('/edit/{id}', function ($id) {
-        if($id == 1){
-            $post = [
-                'title'=>'Learning Laravel',
-                'content'=>'This is some content to display'
+//     Route::get('/edit/{id}', function ($id) {
+//         if($id == 1){
+//             $post = [
+//                 'title'=>'Learning Laravel',
+//                 'content'=>'This is some content to display'
     
-            ];
-        }
-        else{
-            $post = [
-                'title'=>'Something else',
-                'content'=>'This is some content to display when it is something else'
+//             ];
+//         }
+//         else{
+//             $post = [
+//                 'title'=>'Something else',
+//                 'content'=>'This is some content to display when it is something else'
     
-            ];
-        }
-        return view('admin.edit', ['post'=>$post]);
-    })->name('admin.edit');
+//             ];
+//         }
+//         return view('admin.edit', ['post'=>$post]);
+//     })->name('admin.edit');
     
-    Route::post('/create', function (Illuminate\Http\Request $request, Validator $validator) {
-        $validation = Validator::make($request->all(), [
-            'title'=> 'required|min:5',
-            'content'=> 'required'
-        ]);
-        if($validation->fails()){
-            return redirect()->back()->withErrors($validation);
-        }
-        return redirect()->route('admin.index')->with('info', 'Post created with title '.$request->input('title'));
-    })->name('admin.create');
+//     Route::post('/create', function (Illuminate\Http\Request $request, Validator $validator) {
+//         $validation = Validator::make($request->all(), [
+//             'title'=> 'required|min:5',
+//             'content'=> 'required'
+//         ]);
+//         if($validation->fails()){
+//             return redirect()->back()->withErrors($validation);
+//         }
+//         return redirect()->route('admin.index')->with('info', 'Post created with title '.$request->input('title'));
+//     })->name('admin.create');
     
-    Route::post('/edit', function (Illuminate\Http\Request $request, Validator $validator) {
-        $validation = Validator::make($request->all(), [
-            'title'=> 'required|min:5',
-            'content'=> 'required'
-        ]);
-        if($validation->fails()){
-            return redirect()->back()->withErrors($validation);
-        }
-        return redirect()->route('admin.index')->with('info', 'Post edited to title '.$request->input('title'));
-    })->name('admin.update');
-});
+//     Route::post('/edit', function (Illuminate\Http\Request $request, Validator $validator) {
+//         $validation = Validator::make($request->all(), [
+//             'title'=> 'required|min:5',
+//             'content'=> 'required'
+//         ]);
+//         if($validation->fails()){
+//             return redirect()->back()->withErrors($validation);
+//         }
+//         return redirect()->route('admin.index')->with('info', 'Post edited to title '.$request->input('title'));
+//     })->name('admin.update');
+// });
